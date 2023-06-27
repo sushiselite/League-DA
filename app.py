@@ -2,12 +2,12 @@ import csv
 import requests
 
 # Set your Riot API key
-api_key = "API KEY HERE"
+api_key = "KEY HERE"
 
 # Set the region and summoner name for the recent matches
 sum_region = "na1"
 match_region = "americas"
-summoner_name = "SUMMONER HERE"
+summoner_name = "SUMMONER NAME"
 
 # Make a request to retrieve summoner information
 summoner_url = f"https://{sum_region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}?api_key={api_key}"
@@ -22,6 +22,7 @@ def get_data(url):
 
 def write_header(writer):
     header = [
+        "championName",
         "assists",
         "baronKills",
         "bountyLevel",
@@ -106,6 +107,7 @@ def write_header(writer):
 
 def write_data(writer, participant):
     row = [
+        participant.get("championName", ""),
         participant.get("assists", 0),
         participant.get("baronKills", 0),
         participant.get("bountyLevel", 0),
@@ -198,7 +200,7 @@ if response.status_code == 200:
     match_ids = get_data(match_ids_url)
 
     if match_ids:
-        csv_file = "champion_data.csv"
+        csv_file = "data.csv"
 
         with open(csv_file, "w", newline="") as file:
             writer = csv.writer(file)
